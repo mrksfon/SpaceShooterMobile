@@ -24,29 +24,30 @@ public class NewBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Touch.fingers[0].isActive)
+        if (Touch.activeTouches.Count > 0)
         {
-            Touch myTouch = Touch.activeTouches[0];
-            Vector3 touchPos = myTouch.screenPosition;
-            touchPos = mainCam.ScreenToWorldPoint(touchPos);
-
-            if (Touch.activeTouches[0].phase == TouchPhase.Began)
+            if (Touch.activeTouches[0].finger.index == 0)
             {
-                offset = touchPos - transform.position;
+                Touch myTouch = Touch.activeTouches[0];
+                Vector3 touchPos = myTouch.screenPosition;
+                touchPos = mainCam.ScreenToWorldPoint(touchPos);
+
+                if (Touch.activeTouches[0].phase == TouchPhase.Began)
+                {
+                    offset = touchPos - transform.position;
+                }
+
+                if (Touch.activeTouches[0].phase == TouchPhase.Moved)
+                {
+                    transform.position = new Vector3(touchPos.x - offset.x, touchPos.y - offset.y, 0);
+                }
+                if (Touch.activeTouches[0].phase == TouchPhase.Stationary)
+                {
+                    transform.position = new Vector3(touchPos.x - offset.x, touchPos.y - offset.y, 0);
+                }
+
+                transform.position = new Vector3(Mathf.Clamp(transform.position.x, maxLeft, maxRight), Mathf.Clamp(transform.position.y, maxDown, maxUp), 0);
             }
-
-            if (Touch.activeTouches[0].phase == TouchPhase.Moved)
-            {
-                transform.position = new Vector3(touchPos.x - offset.x, touchPos.y - offset.y, 0);
-            }
-            if (Touch.activeTouches[0].phase == TouchPhase.Stationary)
-            {
-                transform.position = new Vector3(touchPos.x - offset.x, touchPos.y - offset.y, 0);
-            }
-
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x, maxLeft, maxRight), Mathf.Clamp(transform.position.y, maxDown, maxUp), 0);
-
-
         }
     }
 
