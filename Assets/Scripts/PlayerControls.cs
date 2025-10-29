@@ -8,9 +8,20 @@ public class NewBehaviourScript : MonoBehaviour
 {
     private Camera mainCam;
     private Vector3 offset;
+    private float maxLeft;
+    private float maxRight;
+    private float maxDown;
+    private float maxUp;
+
     void Start()
     {
         mainCam = Camera.main;
+
+        maxLeft = mainCam.ViewportToWorldPoint(new Vector2(0.15f, 0)).x;
+        maxRight = mainCam.ViewportToWorldPoint(new Vector2(0.85f, 0)).x;
+        maxDown = mainCam.ViewportToWorldPoint(new Vector2(0, 0.05f)).y;
+        maxUp = mainCam.ViewportToWorldPoint(new Vector2(0, 0.6f)).y;
+
     }
 
     // Update is called once per frame
@@ -35,6 +46,8 @@ public class NewBehaviourScript : MonoBehaviour
             {
                 transform.position = new Vector3(touchPos.x - offset.x, touchPos.y - offset.y, 0);
             }
+
+            transform.position = new Vector3(Mathf.Clamp(transform.position.x, maxLeft, maxRight), Mathf.Clamp(transform.position.y, maxDown, maxUp), 0);
 
 
         }
